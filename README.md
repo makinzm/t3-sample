@@ -33,6 +33,7 @@ https://create.t3.gg/en/usage/first-steps
 
 ```bash
 sh ./start-database.sh
+npx prisma db push
 ```
 
 ```bash
