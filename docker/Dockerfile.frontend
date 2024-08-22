@@ -1,7 +1,10 @@
 # 2 stages build
 FROM node:20
 WORKDIR /app
-COPY package.json yarn.lock ./
+# Install the same version of yarn in package.json volta
+RUN corepack enable
+
+COPY ../package.json ../yarn.lock ./
 RUN yarn install
 COPY . .
 RUN yarn build
