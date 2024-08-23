@@ -37,8 +37,6 @@ npx prisma db push
 ```
 
 ```bash
-docker build -t myapp-postgres -f docker/Dockerfile.postgres .
 docker build -t myapp-frontend -f docker/Dockerfile.frontend .
-docker run -d --name frontend myapp-frontend
 docker run -d --name postgres myapp-postgres
 ```
