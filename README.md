@@ -37,6 +37,7 @@ npx prisma db push
 ```
 
 ```bash
+# TODO: Reference: https://create.t3.gg/en/deployment/docker
 docker build -t myapp-frontend -f docker/Dockerfile.frontend .
 docker run -d --name postgres myapp-postgres
 ```
