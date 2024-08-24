@@ -35,9 +35,8 @@ https://create.t3.gg/en/usage/first-steps
 sh ./start-database.sh
 npx prisma db push
 ```
-
+Reference: https://create.t3.gg/en/deployment/docker
 ```bash
-# TODO: Reference: https://create.t3.gg/en/deployment/docker
 docker build -t myapp-frontend -f docker/Dockerfile.frontend .
-docker run -d --name postgres myapp-postgres
+docker run -p 3000:3000 myapp-frontend
 ```
