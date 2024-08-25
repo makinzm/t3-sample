@@ -16,16 +16,23 @@ if ! [ -x "$(command -v docker)" ]; then
   exit 1
 fi
 
-if [ "$(docker ps -q -f name=$DB_CONTAINER_NAME)" ]; then
-  echo "Database container '$DB_CONTAINER_NAME' already running"
-  exit 0
-fi
-
-if [ "$(docker ps -q -a -f name=$DB_CONTAINER_NAME)" ]; then
-  docker start "$DB_CONTAINER_NAME"
-  echo "Existing database container '$DB_CONTAINER_NAME' started"
-  exit 0
-fi
+for i in {1..3}; do
+  if [ "$(docker inspect -f '{{.State.Running}}' $DB_CONTAINER_NAME 2>/dev/null)" = "true" ]; then
+    echo "Database container '$DB_CONTAINER_NAME' is already running"
+    exit 0
+  elif [ "$(docker inspect -f '{{.State.Running}}' $DB_CONTAINER_NAME 2>/dev/null)" = "false" ]; then
+    if docker start "$DB_CONTAINER_NAME"; then
+      echo "Existing database container '$DB_CONTAINER_NAME' started"
+      exit 0
+    else
+      echo "Failed to start container, retrying..."
+      sleep 2
+    fi
+  else
+    echo "Container not found, will attempt to create..."
+    break
+  fi
+done
 
 # import env variables from .env
 set -a
@@ -53,3 +60,6 @@ docker run -d \
   -e POSTGRES_DB=t3-sample \
   -p "$DB_PORT":5432 \
   docker.io/postgres && echo "Database container '$DB_CONTAINER_NAME' was successfully created"
+
+npx prisma db push --preview-feature
+
