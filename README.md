@@ -33,7 +33,6 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 
 ```bash
 ./start-database.sh
-npx prisma db push
 yarn dev
 kill -9 $(pgrep yarn)
 docker stop $(docker ps | grep postgres | awk '{print $1}')
